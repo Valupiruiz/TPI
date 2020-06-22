@@ -274,10 +274,41 @@ void ordenar(reunion &r, int prof, int freq){
         cout<<"Test011"<<"";
     }
 }
+//7********************************************************************************************************
+
+//8********************************************************************************************************
+bool intervaloSilencio(senial s,int umbral){
+    int verificador = 0;
+    for(int i=0;i<s.size();i++){
+        if(abs(s[i])<umbral){
+            verificador = verificador +1;
+        }
+    }
+    return verificador == s.size()-1;
+}
+
+
+vector<int> subSec(senial s,int i ,int j){
+    vector<int> res;
+    while(i<=j){
+        res.push_back(i);
+        i=i+1;
+    }
+    return res;
+}
+
 
 vector<intervalo > silencios(senial s, int prof, int freq, int umbral) {
     vector<pair<int,int> > intervalos;
-    // Implementacion
+    if(esSenial(s,prof,freq) && umbralValido(umbral)){
+        for(int i=0;i<s.size();i++){
+            for(int j=0;j<s.size();j++){
+                if(duraMasDe(subSec(s,i,j),freq,0.1) && intervaloSilencio(subSec(s,i,j),umbral)){
+                    intervalos.push_back(make_pair(i,j));
+                }
+            }
+        }
+    }
     return intervalos;
 }
 
