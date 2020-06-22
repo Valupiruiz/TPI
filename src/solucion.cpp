@@ -54,22 +54,25 @@ vector<int> subsenial(int i,senial s){
     return res;
 }
 
-int tono(int i,senial s){
+int tono(senial s){
     int sumatoria = 0;
-    for(int j=0;j<=i;j=j+1){
+    for(int j=0;j<s.size();j=j+1){
         sumatoria = sumatoria + abs(s[j]);
     }
-    return (sumatoria / (i+1));
+    return (sumatoria / (s.size()));
 }
 
 bool umbralValido(int umbral){
     return umbral > 0;
 }
+bool superaElUmbral(senial s , int umbral){
+    return tono(s)>umbral;
+}
 
 bool seEnojo(senial s, int umbral, int prof , int freq){
     if(esValida(s,prof,freq) && umbralValido(umbral)){
         for(int i=0;i<s.size();){
-            if(tono(i,s)>umbral && duraMasDe(subsenial(i,s),freq,2)){
+            if(superaElUmbral(subsenial(i,s),umbral) && duraMasDe(subsenial(i,s),freq,2)){
                 return true;
             }else{
                 i=i+1;
@@ -227,7 +230,7 @@ hablante HablanteDelControlador(senial controlador , reunion r){
 hablante TieneElTonoMasElevado(reunion r){
     senial controlador = r[0].first;
     for(int i =0;i<r.size();i=i+1){
-        if (tono(r[i].first.size()-1,r[i].first) >= tono(controlador.size()-1,controlador)){
+        if (tono(r[i].first) >= tono(controlador)){
             controlador = r[i].first;
         }
     }
@@ -248,13 +251,17 @@ vector<hablante> tonosDeVozElevados(reunion r, int prof, int freq){
 
 //7********************************************************************************************************
 void ReunionOrdenada(reunion &r){
-    pair<senial, hablante> controlador1;
+    senial res1;
+    hablante res2;
     for(int i =0;i<r.size();i=i+1){
         for(int j =i+1;j<r.size();j=j+1){
-            if (tono(r[i].first.size()-1,r[i].first) <= tono(r[j].first.size()-1,r[j].first)){
-                controlador1 = make_pair(r[i].first, r[i].second);
-                make_pair(r[i].first, r[i].second) = make_pair(r[j].first, r[j].second);
-                make_pair(r[j].first, r[j].second)  = controlador1;
+            if (tono(r[i].first) <= tono(r[j].first)){
+                res1=r[i].first;
+                res2=r[i].second;
+                r[i].first = r[j].first;
+                r[i].second = r[j].second;
+                r[j].first = res1;
+                r[j].second = res2;
 
             }
         }
