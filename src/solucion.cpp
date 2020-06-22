@@ -280,21 +280,22 @@ void ordenar(reunion &r, int prof, int freq){
 bool intervaloSilencio(senial s,int umbral){
     int verificador = 0;
     for(int i=0;i<s.size();i++){
-        if(abs(s[i])<umbral){
+        if( s[i]<umbral){
             verificador = verificador +1;
         }
     }
-    return verificador == s.size()-1;
+    return verificador == s.size();
 }
 
 
-vector<int> subSec(senial s,int i ,int j){
+vector<int> subSecAbs(senial s,int i ,int j){//hace como subsecuencia pero todo lo que entra se vuelve +
     vector<int> res;
     while(i<=j){
-        res.push_back(i);
+        res.push_back(abs(s[i]));
         i=i+1;
     }
     return res;
+
 }
 
 
@@ -303,14 +304,17 @@ vector<intervalo > silencios(senial s, int prof, int freq, int umbral) {
     if(esSenial(s,prof,freq) && umbralValido(umbral)){
         for(int i=0;i<s.size();i++){
             for(int j=0;j<s.size();j++){
-                if(duraMasDe(subSec(s,i,j),freq,0.1) && intervaloSilencio(subSec(s,i,j),umbral)){
-                    intervalos.push_back(make_pair(i,j));
+                if( duraMasDe(subSecAbs(s,i,j),freq,0.1) && intervaloSilencio(subSecAbs(s,i,j),umbral)){
+                    if( i<j  || (i==0 && j==0) || (i==s.size()-1 && j==s.size()-1)){
+                        intervalos.push_back(make_pair(i,j));
+                    }
                 }
             }
         }
     }
     return intervalos;
 }
+
 
 
 bool hablantesSuperpuestos(reunion r, int prof, int freq, int umbral) {
