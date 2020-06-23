@@ -299,7 +299,7 @@ vector<int> subSecAbs(senial s,int i ,int j){//hace como subsecuencia pero todo 
 }
 
 
-vector<intervalo > silencios(senial s, int prof, int freq, int umbral) {
+vector<intervalo> silencios(senial s, int prof, int freq, int umbral) {
     vector<pair<int,int> > intervalos;
     if(esSenial(s,prof,freq) && umbralValido(umbral)){
         for(int i=0;i<s.size();i++){
@@ -315,13 +315,34 @@ vector<intervalo > silencios(senial s, int prof, int freq, int umbral) {
     return intervalos;
 }
 
+//8**********************************************************************************************************
 
+//9**********************************************************************************************************
+bool existeHablanteConIgualIntervalo(vector<intervalo>, hablante){
+    int i = 0;
 
+}
 bool hablantesSuperpuestos(reunion r, int prof, int freq, int umbral) {
     bool resp = false;
-    // Implementacion
+    vector<pair<vector<intervalo>,hablante>> silencios_hablantes;
+    if(esReunionValida(r,prof,freq) && umbralValido(umbral)){
+        for(int i=0; i < r.size(); i++) {
+            pair<vector<intervalo>, hablante> hablante_silencio;
+            hablante_silencio.first = silencios(r[i].first, prof, freq, umbral);
+            hablante_silencio.second = r[i].second;
+            silencios_hablantes.push_back(hablante_silencio);
+        }
+    while( j < s.size && !resp){
+        resp = existeHablanteConIgualIntervalo(silencios_hablantes[i].first, silencios_hablantes[i].second);
+        j++;
+        }
+    }
     return resp;
 }
+
+//9*********************************************************************************************************
+
+//10*********************************************************************************************************
 
 senial reconstruir(senial s, int prof, int freq) {
     senial senalReconstruida;
@@ -329,8 +350,13 @@ senial reconstruir(senial s, int prof, int freq) {
     return senalReconstruida;
 }
 
+//10*********************************************************************************************************
+
+//11*********************************************************************************************************
+
 void filtradoMediana(senial& s, int R, int prof, int freq){
     // Implementacion
     return;
 }
 
+//11*********************************************************************************************************
